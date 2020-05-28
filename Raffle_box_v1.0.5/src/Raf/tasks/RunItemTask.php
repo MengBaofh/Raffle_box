@@ -38,13 +38,12 @@ class RunItemTask extends Task
         $sjwpID=mt_rand(264,266);
         $sjwpC = mt_rand(0,99);
         $sjwp = Item::get($sjwpID,0,$sjwpC);
-//        $this->inv->getInventory()->setItem($this->i,$sjwp);
         $inv=$this->player->getInventory();
         $olditems = array();
-        for($i=0;$i<$inv->getHotbarSize();$i++){
-        $olditems[] = $inv->getItem($i);
-        $inv->setItem($i,$sjwp);
-  //#item#改成你要改的item
-}
+        for($i=0;$i<$inv->getHotbarSize();$i++)
+        {
+           $olditems[] = $inv->getItem($i);
+           $inv->setItem($i,$sjwp);
+        }
     }
 }
