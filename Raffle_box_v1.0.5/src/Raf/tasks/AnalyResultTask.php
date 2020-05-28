@@ -45,8 +45,6 @@ class AnalyResultTask extends Task
         $this->gl = $gl;
         $this->zl = $zl;
         $this->result = $result;
-//        $this->plugin = $plugin;
-//		$plugin->getServer()->getPluginManager()->registerEvents($this, $plugin);
     }
 
     /**
@@ -58,50 +56,50 @@ class AnalyResultTask extends Task
      */
     public function onRun(int $currentTick)
     {
-       $this->instance->getScheduler()->cancelTask($this->id);
+        $this->instance->getScheduler()->cancelTask($this->id);
         //还原背包
-        for($i=0;$i<count($this->oldItems);$i++){
+        for($i=0;$i<count($this->oldItems);$i++)
+        {
             $this->inv->setItem($i,$this->oldItems[$i]);
         }
             //判断是否中奖
-            if(!$this->result){
-                $this->player->sendMessage("§c很遗憾，您未中奖。");
-       $name=$this->player->getName();
-       $this->ingame->set("$name","false");
-       $this->ingame->save();
-                return true;
-            }else{
-                //全服公告玩家，中奖内容，奖励级别,奖励类型
-                Server::getInstance()->broadcastMessage("§c恭喜§b玩家.{$this->player->getName()}.§e抽中{$this->jb[0]}§e级大奖{$this->n[0]}。");
-                //发送玩家中奖信息
-                $this->player->sendMessage("§e恭喜您中奖:{$this->jb[0]}级大奖{$this->n[0]}");
-                //执行指令
-//                var_dump($this->lx);
-                switch($this->lx[0])
-                {
-                    case "money":
-                    case "item":
-                    case "exp":
-                        //字符转义
-                        $p = $this->player->getName();
-                        $zf=array(
-                            "{player}",
-                            "*"
-                        );
-                        $zfs=array(
-                            "{$p}",
-                            " "
-                        );
-                        $Comrep=str_replace($zf,$zfs,$this->zl[0]);
-//                         $this->player->sendMessage("$this->lx[0],$Comrep");
-                        //后台执行指令$Comrep
-                       Server::getInstance()->dispatchCommand(new ConsoleCommandSender(),$Comrep);
-                        break;
-                }//switch
-       $name=$this->player->getName();
-       $this->ingame->set("$name","false");
-       $this->ingame->save();
-                return true;
-            }
+        if(!$this->result)
+        {
+           $this->player->sendMessage("§c很遗憾，您未中奖。");
+           $name=$this->player->getName();
+           $this->ingame->set("$name","false");
+           $this->ingame->save();
+           return true;
+        }else{
+           //全服公告玩家，中奖内容，奖励级别,奖励类型
+           Server::getInstance()->broadcastMessage("§c恭喜§b玩家.{$this->player->getName()}.§e抽中{$this->jb[0]}§e级大奖{$this->n[0]}。");
+           //发送玩家中奖信息
+           $this->player->sendMessage("§e恭喜您中奖:{$this->jb[0]}级大奖{$this->n[0]}");
+           //执行指令
+           switch($this->lx[0])
+           {
+               case "money":
+               case "item":
+               case "exp":
+               //字符转义
+               $p = $this->player->getName();
+               $zf = array(
+                           "{player}",
+                           "*"
+                          );
+               $zfs = array(
+                           "{$p}",
+                           " "
+                          );
+               $Comrep=str_replace($zf,$zfs,$this->zl[0]);
+               //后台执行指令$Comrep
+               Server::getInstance()->dispatchCommand(new ConsoleCommandSender(),$Comrep);
+               break;
+           }
+           $name=$this->player->getName();
+           $this->ingame->set("$name","false");
+           $this->ingame->save();
+           return true;
+        }
     }
 }
